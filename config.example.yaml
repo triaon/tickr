@@ -1,0 +1,30 @@
+exchanges:
+  binance:
+    enabled: true
+    spot_base_url: "https://api.binance.com"
+    futures_base_url: "https://fapi.binance.com"
+
+  bybit:
+    enabled: true
+    base_url: "https://api.bybit.com"
+
+  mexc:
+    enabled: true
+    spot_base_url: "https://api.mexc.com"
+    futures_base_url: "https://contract.mexc.com"
+
+  bingx:
+    enabled: true
+    base_url: "https://open-api.bingx.com"
+
+output:
+  default_format: "json"
+  include_raw: false
+
+tradingview:
+  suffix_perp: ".P"
+
+telegram:
+  enabled: false
+  bot_token: ""
+  chat_id: ""
