@@ -40,11 +40,28 @@
       "dist-electron/**",
       "dist/**"
     ],
-    "extraResources": [
-      { "from": "../dist/tickr-mac-m", "to": "bin/tickr", "filter": ["**/*"] }
-    ],
-    "mac": { "category": "public.app-category.finance", "target": ["dmg", "zip"] },
-    "win": { "target": ["nsis", "zip"] },
-    "linux": { "target": ["AppImage", "deb"], "category": "Office" }
+    "mac": {
+      "category": "public.app-category.finance",
+      "target": ["dmg", "zip"],
+      "extraResources": [
+        { "from": "../dist/tickr-mac-m", "to": "bin/tickr-arm64" },
+        { "from": "../dist/tickr-mac-intel", "to": "bin/tickr-x64" }
+      ]
+    },
+    "win": {
+      "target": ["nsis", "zip"],
+      "extraResources": [
+        { "from": "../dist/tickr-windows.exe", "to": "bin/tickr-x64.exe" },
+        { "from": "../dist/tickr-windows-arm.exe", "to": "bin/tickr-arm64.exe" }
+      ]
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Office",
+      "extraResources": [
+        { "from": "../dist/tickr-linux", "to": "bin/tickr-x64" },
+        { "from": "../dist/tickr-linux-arm", "to": "bin/tickr-arm64" }
+      ]
+    }
   }
 }

@@ -7,8 +7,10 @@ import * as path from "node:path";
 const isDev = process.env.NODE_ENV === "development";
 
 // Resolve the bundled Go CLI binary.
-// Dev: walk up from ui/ → repo root → dist/tickr-mac-m (or platform-matched).
-// Prod: process.resourcesPath/bin/tickr (set via extraResources).
+// Dev: walk up from ui/ → repo root → dist/tickr-<platform>.
+// Prod: process.resourcesPath/bin/tickr-<arch>(.exe). extraResources in
+// package.json bundles both x64 and arm64 binaries per platform; we pick
+// the right one at runtime based on process.arch.
 function resolveBinary(): string {
   if (isDev) {
     const repoRoot = path.resolve(__dirname, "..", "..");
@@ -26,7 +28,8 @@ function resolveBinary(): string {
     }
   }
   const ext = process.platform === "win32" ? ".exe" : "";
-  return path.join(process.resourcesPath, "bin", `tickr${ext}`);
+  const arch = process.arch === "arm64" ? "arm64" : "x64";
+  return path.join(process.resourcesPath, "bin", `tickr-${arch}${ext}`);
 }
 
 type FetchArgs = {

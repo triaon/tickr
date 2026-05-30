@@ -31,3 +31,4 @@ config.local.yaml
 
 # Local config (use config.example.yaml as template)
 config.yaml
+ui/tsconfig.tsbuildinfo
