@@ -40,6 +40,7 @@ type FetchArgs = {
   activeOnly: boolean;
   tradingView: boolean;
   reverse: boolean;
+  intersectWith?: string;
 };
 
 ipcMain.handle("fetch-symbols", async (_evt, args: FetchArgs): Promise<{ ok: boolean; symbols: string[]; error?: string }> => {
@@ -58,6 +59,7 @@ ipcMain.handle("fetch-symbols", async (_evt, args: FetchArgs): Promise<{ ok: boo
   if (args.reverse) cliArgs.push("--reverse");
   if (args.quote) cliArgs.push("--quote", args.quote);
   if (args.base) cliArgs.push("--base", args.base);
+  if (args.intersectWith) cliArgs.push("--intersect-with", args.intersectWith);
 
   return new Promise((resolve) => {
     const proc = spawn(bin, cliArgs);

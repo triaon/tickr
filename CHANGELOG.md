@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.1.1 — 2026-05-31
+
+### Added
+
+- **Cross-exchange intersection** via `--intersect-with <exchange>` on
+  `fetch`. Filters the result down to symbols whose base asset is also
+  listed (same categories) on a second exchange. Example: Binance perp
+  USDT tickers in TradingView format, but only for assets that also
+  trade on BingX. Mirrored in the wizard and as an "Intersect with"
+  segmented control in the desktop UI.
+
 ## v0.1.0 — 2026-05-29
 
 First tagged release. The CLI is feature-complete for spot/swap fetches

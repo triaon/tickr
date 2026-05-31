@@ -91,7 +91,7 @@ func newLogger(level string, debug bool) *slog.Logger {
 
 func runFetch(args []string) error {
 	fs := flag.NewFlagSet("fetch", flag.ExitOnError)
-	var exch, cats, format, out, tvSep, quote, base, market, cfgPath, logLevel string
+	var exch, cats, format, out, tvSep, quote, base, market, cfgPath, logLevel, intersect string
 	var useTV, activeOnly, includeRaw, debug, reverse bool
 	activeOnly = true
 	strVar(fs, &exch, "", "exchange: binance|mexc|bingx|bybit (required)", "exchange", "e")
@@ -109,6 +109,7 @@ func runFetch(args []string) error {
 	strVar(fs, &logLevel, "info", "log level: debug|info|warn|error", "log-level", "l")
 	boolVar(fs, &debug, false, "shortcut for --log-level debug", "debug", "d")
 	boolVar(fs, &reverse, false, "reverse the final symbol list", "reverse")
+	strVar(fs, &intersect, "", "keep only symbols whose base asset is also listed on this exchange (e.g. bingx)", "intersect-with")
 	_ = fs.Parse(args)
 
 	if exch == "" || cats == "" {
@@ -150,8 +151,9 @@ func runFetch(args []string) error {
 		Quote:      quote,
 		Base:       base,
 		Market:     market,
-		TVSuffix:   cfg.TradingView.SuffixPerp,
-		Reverse:    reverse,
+		TVSuffix:      cfg.TradingView.SuffixPerp,
+		Reverse:       reverse,
+		IntersectWith: intersect,
 	}, log)
 	if err != nil {
 		return err

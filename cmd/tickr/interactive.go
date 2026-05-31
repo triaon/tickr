@@ -362,6 +362,24 @@ func interactiveFetch(p *prompter) error {
 		return err
 	}
 
+	intersect := ""
+	wantIntersect, err := p.askBool("Keep only symbols also listed on another exchange?", false)
+	if err != nil {
+		return err
+	}
+	if wantIntersect {
+		others := []string{}
+		for _, e := range exchanges {
+			if e != exch {
+				others = append(others, e)
+			}
+		}
+		_, intersect, err = p.askChoice("Intersect with:", others, 0)
+		if err != nil {
+			return err
+		}
+	}
+
 	args := []string{
 		"--exchange", exch,
 		"--categories", strings.Join(cats, ","),
@@ -385,6 +403,9 @@ func interactiveFetch(p *prompter) error {
 	}
 	if reverse {
 		args = append(args, "--reverse")
+	}
+	if intersect != "" {
+		args = append(args, "--intersect-with", intersect)
 	}
 
 	fmt.Fprintf(p.out, "\n→ tickr fetch %s\n\n", strings.Join(args, " "))

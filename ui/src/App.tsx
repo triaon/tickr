@@ -24,6 +24,7 @@ export function App() {
   const [activeOnly, setActiveOnly] = useState(true);
   const [tradingView, setTradingView] = useState(true);
   const [reverse, setReverse] = useState(false);
+  const [intersectWith, setIntersectWith] = useState<Exchange | "">("");
 
   const [loading, setLoading] = useState(false);
   const [symbols, setSymbols] = useState<string[]>([]);
@@ -34,6 +35,10 @@ export function App() {
     const saved = localStorage.getItem(THEME_KEY);
     return saved === "light" ? "light" : "dark";
   });
+  useEffect(() => {
+    if (intersectWith === exchange) setIntersectWith("");
+  }, [exchange, intersectWith]);
+
   useEffect(() => {
     document.documentElement.classList.toggle("theme-light", theme === "light");
     document.documentElement.classList.toggle("theme-dark", theme === "dark");
@@ -70,6 +75,7 @@ export function App() {
       activeOnly,
       tradingView,
       reverse,
+      intersectWith: intersectWith || undefined,
     };
   }
 
@@ -197,6 +203,27 @@ export function App() {
             </div>
           </div>
 
+          <div className="field">
+            <span className="label">Intersect with</span>
+            <div className="segmented" style={{ flexWrap: "wrap" }}>
+              <button
+                className={intersectWith === "" ? "active" : ""}
+                onClick={() => setIntersectWith("")}
+              >
+                none
+              </button>
+              {EXCHANGES.filter((e) => e !== exchange).map((e) => (
+                <button
+                  key={e}
+                  className={intersectWith === e ? "active" : ""}
+                  onClick={() => setIntersectWith(e)}
+                >
+                  {e}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="field flag-row">
             <span className="label">Options</span>
             <div className="flag">
@@ -257,6 +284,7 @@ export function App() {
                 ))}
                 {tradingView && <span className="tag green">tv</span>}
                 {reverse && <span className="tag yellow">reversed</span>}
+                {intersectWith && <span className="tag red">∩ {intersectWith}</span>}
               </div>
               <div className="symbol-list">
                 {symbols.map((s, i) => (

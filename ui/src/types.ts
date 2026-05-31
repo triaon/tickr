@@ -6,6 +6,7 @@ export type FetchArgs = {
   activeOnly: boolean;
   tradingView: boolean;
   reverse: boolean;
+  intersectWith?: string;
 };
 
 export type FetchResult = {

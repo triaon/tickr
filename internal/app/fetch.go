@@ -24,6 +24,11 @@ type FetchOptions struct {
 	Market     string
 	TVSuffix   string
 	Reverse    bool
+	// IntersectWith, if set, names a second exchange. After the primary
+	// fetch is filtered, the result is reduced to symbols whose BaseAsset
+	// is ALSO listed on the second exchange (same Categories applied
+	// there). Used to e.g. take "binance perps that exist on bingx too".
+	IntersectWith string
 }
 
 // BuildRegistry constructs a registry from config.
@@ -78,6 +83,35 @@ func Fetch(ctx context.Context, reg *exchange.Registry, opts FetchOptions, log *
 		Market:     opts.Market,
 	})
 	log.Debug("after filter", "exchange", opts.Exchange, "count", len(filtered))
+
+	if opts.IntersectWith != "" && opts.IntersectWith != opts.Exchange {
+		other, oerr := reg.Get(opts.IntersectWith)
+		if oerr != nil {
+			return output.Envelope{}, fmt.Errorf("intersect-with %q: %w", opts.IntersectWith, oerr)
+		}
+		oraw, _, oerr := other.Fetch(ctx, req)
+		if oerr != nil {
+			return output.Envelope{}, fmt.Errorf("%s fetch (intersect): %w", opts.IntersectWith, oerr)
+		}
+		ofiltered := Apply(oraw, FilterOpts{
+			Categories: opts.Categories,
+			Quote:      opts.Quote,
+			Base:       opts.Base,
+			Market:     opts.Market,
+		})
+		bases := make(map[string]struct{}, len(ofiltered))
+		for _, s := range ofiltered {
+			bases[s.BaseAsset] = struct{}{}
+		}
+		kept := filtered[:0]
+		for _, s := range filtered {
+			if _, ok := bases[s.BaseAsset]; ok {
+				kept = append(kept, s)
+			}
+		}
+		filtered = kept
+		log.Debug("after intersect", "with", opts.IntersectWith, "count", len(filtered))
+	}
 
 	if opts.Reverse {
 		for i, j := 0, len(filtered)-1; i < j; i, j = i+1, j-1 {
