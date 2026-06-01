@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { api } from "./api";
 import type { FetchArgs } from "./types";
 
 type Theme = "dark" | "light";
@@ -84,7 +85,7 @@ export function App() {
     setError(null);
     const args = buildArgs();
     try {
-      const res = await window.api.fetchSymbols(args);
+      const res = await api.fetchSymbols(args);
       if (!res.ok) {
         setError(res.error || "unknown error");
         setSymbols([]);
@@ -107,7 +108,7 @@ export function App() {
   async function onSave() {
     if (!symbols.length) return;
     const name = `${exchange}_${market}_${quote.toLowerCase()}.txt`;
-    await window.api.saveText(name, symbols.join("\n") + "\n");
+    await api.saveText(name, symbols.join("\n") + "\n");
   }
 
   function onReverseLocal() {
@@ -116,7 +117,7 @@ export function App() {
 
   return (
     <div className="app">
-      <div className="titlebar-drag" />
+      <div className="titlebar-drag" data-tauri-drag-region />
       <aside className="sidebar">
         <div className="brand">
           <div className="brand-text">

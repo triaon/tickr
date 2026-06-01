@@ -1,34 +1,15 @@
-# macOS
-.DS_Store
-
-# Local build outputs
 dist/
+node_modules/
+config.yaml
 state/
-*.log
 
-# Generated symbol files
-*.txt
-!ui/**/*.txt
-
-# UI workspace
-ui/node_modules/
 ui/dist/
 ui/dist-electron/
 ui/release/
-
-# Editor / IDE
-.idea/
-.vscode/
-
-# Coverage
-*.out
-coverage/
-
-# Local config overrides
-config.local.yaml
-.env
-.env.local
-
-# Local config (use config.example.yaml as template)
-config.yaml
 ui/tsconfig.tsbuildinfo
+ui/src-tauri/target/
+ui/src-tauri/binaries/
+ui/src-tauri/gen/
+.DS_Store
+.claude/
+bingx_swap_usdt.txt

@@ -1,6 +1,6 @@
 {
   "name": "tickr-ui",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "Minimalist desktop UI for tickr",
   "main": "dist-electron/main.js",
@@ -9,6 +9,10 @@
     "dev:vite": "vite",
     "dev:electron": "wait-on tcp:5173 && tsc -p electron/tsconfig.json && cross-env NODE_ENV=development electron .",
     "build": "tsc -b && vite build && tsc -p electron/tsconfig.json",
+    "build:web": "tsc -b && vite build",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
     "package": "npm run build && electron-builder",
     "package:mac": "npm run build && electron-builder --mac",
     "package:win": "npm run build && electron-builder --win",
@@ -19,6 +23,11 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@tauri-apps/api": "^2.11.0",
+    "@tauri-apps/cli": "^2.11.2",
+    "@tauri-apps/plugin-dialog": "^2.7.1",
+    "@tauri-apps/plugin-fs": "^2.5.1",
+    "@tauri-apps/plugin-shell": "^2.3.5",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
@@ -42,25 +51,80 @@
     ],
     "mac": {
       "category": "public.app-category.finance",
-      "target": ["dmg", "zip"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "build/icon.icns",
       "extraResources": [
-        { "from": "../dist/tickr-mac-m", "to": "bin/tickr-arm64" },
-        { "from": "../dist/tickr-mac-intel", "to": "bin/tickr-x64" }
+        {
+          "from": "../dist/tickr-mac-m",
+          "to": "bin/tickr-arm64"
+        },
+        {
+          "from": "../dist/tickr-mac-intel",
+          "to": "bin/tickr-x64"
+        }
       ]
     },
+    "dmg": {
+      "title": "tickr ${version}",
+      "contents": [
+        {
+          "x": 130,
+          "y": 220,
+          "type": "file"
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 270,
+          "y": 380,
+          "type": "file",
+          "path": "build/README.txt"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 460
+      }
+    },
     "win": {
-      "target": ["nsis", "zip"],
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "icon": "build/icon.png",
       "extraResources": [
-        { "from": "../dist/tickr-windows.exe", "to": "bin/tickr-x64.exe" },
-        { "from": "../dist/tickr-windows-arm.exe", "to": "bin/tickr-arm64.exe" }
+        {
+          "from": "../dist/tickr-windows.exe",
+          "to": "bin/tickr-x64.exe"
+        },
+        {
+          "from": "../dist/tickr-windows-arm.exe",
+          "to": "bin/tickr-arm64.exe"
+        }
       ]
     },
     "linux": {
-      "target": ["AppImage"],
+      "target": [
+        "AppImage"
+      ],
       "category": "Office",
+      "icon": "build/icon.png",
       "extraResources": [
-        { "from": "../dist/tickr-linux", "to": "bin/tickr-x64" },
-        { "from": "../dist/tickr-linux-arm", "to": "bin/tickr-arm64" }
+        {
+          "from": "../dist/tickr-linux",
+          "to": "bin/tickr-x64"
+        },
+        {
+          "from": "../dist/tickr-linux-arm",
+          "to": "bin/tickr-arm64"
+        }
       ]
     }
   }

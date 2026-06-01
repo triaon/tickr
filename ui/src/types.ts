@@ -15,13 +15,3 @@ export type FetchResult = {
   error?: string;
 };
 
-declare global {
-  interface Window {
-    api: {
-      fetchSymbols(args: FetchArgs): Promise<FetchResult>;
-      saveText(defaultName: string, content: string): Promise<{ ok: boolean; path?: string }>;
-      openExternal(url: string): Promise<void>;
-      platform: string;
-    };
-  }
-}

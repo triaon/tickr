@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "tickr",
+  "version": "0.1.2",
+  "identifier": "com.etz.tickr",
+  "build": {
+    "beforeDevCommand": "npm run dev:vite",
+    "devUrl": "http://localhost:5173",
+    "beforeBuildCommand": "npm run build:web",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "tickr",
+        "width": 980,
+        "height": 720,
+        "minWidth": 780,
+        "minHeight": 560,
+        "resizable": true,
+        "fullscreen": false,
+        "backgroundColor": "#181a1e",
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "externalBin": ["binaries/tickr-cli"],
+    "category": "Finance",
+    "shortDescription": "Fetch normalized trading symbols from CEX APIs",
+    "macOS": {
+      "minimumSystemVersion": "10.15"
+    }
+  }
+}

@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.1.2 — 2026-06-01
+
+### Changed
+
+- **Desktop UI rewritten on Tauri 2 (Rust).** Replaces the Electron 33
+  bundle. The macOS DMG drops from ~103 MB to ~7.4 MB. Same React
+  frontend, same features, same look — just a Rust shell calling the
+  bundled Go CLI as a sidecar.
+
+### Notes
+
+- v0.1.2 ships the macOS arm64 DMG only. Windows / Linux Tauri builds
+  need the CI workflow updated; tracked for the next release.
+- Plain CLI binaries are unchanged from v0.1.1.
+
 ## v0.1.1 — 2026-05-31
 
 ### Added
