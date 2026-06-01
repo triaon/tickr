@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.1.3 — 2026-06-01
+
+### Added
+
+- **All-platform Tauri builds.** The release workflow now matrix-builds
+  desktop bundles for macOS arm64, macOS Intel, Linux x64, and Windows
+  x64, and uploads them straight to the GitHub release.
+
+### Fixed
+
+- Windows portable from v0.1.1 didn't launch. The v0.1.3 NSIS installer
+  built by the new Tauri pipeline replaces it.
+
 ## v0.1.2 — 2026-06-01
 
 ### Changed
