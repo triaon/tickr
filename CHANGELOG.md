@@ -5,8 +5,9 @@
 ### Added
 
 - **All-platform Tauri builds.** The release workflow now matrix-builds
-  desktop bundles for macOS arm64, macOS Intel, Linux x64, and Windows
-  x64, and uploads them straight to the GitHub release.
+  desktop bundles for macOS arm64, Linux x64, and Windows x64, and
+  uploads them straight to the GitHub release. Mac Intel ships as CLI
+  only — the desktop UI is Apple Silicon only.
 
 ### Fixed
 
